@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <title>THEFAMEFLEX — We Build. You Earn.</title>
+  <meta name="description" content="THEFAMEFLEX is a shadow operator agency that builds and launches digital products for Instagram creators — zero upfront cost, pure revenue share. Apply to partner." />
+  <meta name="keywords" content="shadow operator, creator monetization, digital products for creators, Instagram course launch, revenue share, India creator economy" />
+  <meta name="author" content="THEFAMEFLEX" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="THEFAMEFLEX" />
+  <meta property="og:title" content="THEFAMEFLEX — We Build. You Earn." />
+  <meta property="og:description" content="Your audience is ready. Your product isn't. We fix that — zero upfront cost, pure revenue share. Apply to partner with THEFAMEFLEX." />
+  <meta property="og:url" content="https://www.thefameflex.com" />
+  <meta property="og:image" content="https://www.thefameflex.com/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="THEFAMEFLEX — Shadow Operator Agency" />
+  <meta property="og:locale" content="en_IN" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="THEFAMEFLEX — We Build. You Earn." />
+  <meta name="twitter:description" content="Zero upfront cost. Pure revenue share. We build your digital product, you keep creating." />
+  <meta name="twitter:image" content="https://www.thefameflex.com/og-image.jpg" />
+  <meta name="twitter:image:alt" content="THEFAMEFLEX Agency" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="canonical" href="https://www.thefameflex.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS & RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #FFFFFF;
+      --bg-alt:     #F7F6F2;
+      --bg-hero:    #EDECE8;
+      --bg-dark:    #0A0A0A;
+      --text-pri:   #0A0A0A;
+      --text-sec:   #666660;
+      --text-muted: #999990;
+      --accent:     #C4916A;
+      --border:     #E4E4E0;
+      --btn-bg:     #0A0A0A;
+      --btn-text:   #FFFFFF;
+      --max-w:      1100px;
+      --sec-pad:    120px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-pri);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; }
+
+    img, svg { display: block; }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ============================================================
+       UTILITY CLASSES
+    ============================================================ */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .section-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: 48px;
+      color: var(--text-pri);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      text-decoration: none;
+    }
+    .btn:hover { transform: scale(1.02); opacity: 0.88; }
+
+    .btn-sm  { height: 36px; padding: 0 20px; font-size: 13px; }
+    .btn-md  { height: 48px; padding: 0 28px; font-size: 15px; }
+    .btn-lg  { height: 54px; padding: 0 36px; font-size: 15px; width: 100%; }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       SECTION 1 — NAVIGATION
+    ============================================================ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      transition: background 0.3s ease, border-color 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled {
+      background: #FFFFFF;
+      border-bottom-color: var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--text-pri);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: #555550;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--text-pri); }
+
+    .nav-right { display: flex; align-items: center; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text-pri);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile overlay nav */
+    #nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #FFFFFF;
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    #nav-overlay.open { display: flex; }
+    #nav-overlay a {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      color: var(--text-pri);
+    }
+
+    /* ============================================================
+       SECTION 2 — HERO (Three.js)
+    ============================================================ */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: var(--bg-hero);
+      overflow: hidden;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.1s linear;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 12%;
+      left: 0; right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 1.5s forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-tagline {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: #555550;
+      text-align: center;
+      max-width: 520px;
+      padding: 0 24px;
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       SECTION 3 — THE PROBLEM
+    ============================================================ */
+    #problem {
+      background: var(--bg);
+      padding: var(--sec-pad) 0;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 55fr 45fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .problem-right p {
+      font-size: 17px;
+      color: var(--text-sec);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .problem-right p:last-child { margin-bottom: 0; }
+
+    /* ============================================================
+       SECTION 4 — HOW IT WORKS
+    ============================================================ */
+    #process {
+      background: var(--bg-alt);
+      padding: var(--sec-pad) 0;
+    }
+
+    .process-header {
+      margin-bottom: 60px;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .process-col {
+      padding: 0 40px;
+      position: relative;
+    }
+    .process-col:first-child { padding-left: 0; }
+    .process-col:last-child  { padding-right: 0; }
+    .process-col + .process-col::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .process-num {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .process-col h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      margin-bottom: 16px;
+      color: var(--text-pri);
+    }
+
+    .process-col p {
+      font-size: 15px;
+      color: var(--text-sec);
+      line-height: 1.75;
+    }
+
+    /* ============================================================
+       SECTION 5 — WHAT WE HANDLE
+    ============================================================ */
+    #scope {
+      background: var(--bg);
+      padding: var(--sec-pad) 0;
+    }
+
+    .scope-header { margin-bottom: 16px; }
+    .scope-subhead {
+      font-size: 18px;
+      color: var(--text-sec);
+      margin-bottom: 64px;
+    }
+
+    .scope-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .scope-item {
+      padding: 36px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .scope-item:nth-child(odd)  { border-right: 1px solid var(--border); }
+    .scope-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .scope-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      margin-top: 2px;
+    }
+
+    .scope-label {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .scope-desc {
+      font-size: 14px;
+      color: var(--text-sec);
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       SECTION 6 — WHO THIS IS FOR
+    ============================================================ */
+    #for-who {
+      background: var(--bg-alt);
+      padding: var(--sec-pad) 0;
+    }
+
+    .forwho-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 17px;
+      color: var(--text-pri);
+      line-height: 1.5;
+    }
+    .check-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+    }
+
+    /* ============================================================
+       SECTION 7 — THE MODEL (dark)
+    ============================================================ */
+    #model {
+      background: var(--bg-dark);
+      padding: var(--sec-pad) 0;
+    }
+
+    .model-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .model-quote {
+      font-family: 'DM Serif Display', serif;
+      font-size: 42px;
+      color: #FFFFFF;
+      line-height: 1.4;
+      margin-bottom: 40px;
+    }
+
+    .model-sub {
+      font-size: 17px;
+      color: #AAAAAA;
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       SECTION 8 — SOCIAL PROOF
+    ============================================================ */
+    #social-proof {
+      background: var(--bg);
+      padding: var(--sec-pad) 0;
+    }
+
+    .proof-header { margin-bottom: 12px; }
+    .proof-subtext {
+      font-size: 17px;
+      color: var(--text-sec);
+      margin-bottom: 56px;
+    }
+
+    .cards-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .creator-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #DDDDD8;
+      flex-shrink: 0;
+    }
+
+    .card-handle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-pri);
+    }
+
+    .niche-tag {
+      display: inline-block;
+      background: var(--bg-alt);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-top: 4px;
+    }
+
+    .card-result {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      color: var(--text-pri);
+    }
+    .card-result-label {
+      font-size: 13px;
+      color: var(--text-sec);
+      margin-top: 2px;
+    }
+
+    /* ============================================================
+       SECTION 9 — APPLICATION FORM
+    ============================================================ */
+    #apply {
+      background: var(--bg-alt);
+      padding: var(--sec-pad) 0;
+    }
+
+    .form-header { margin-bottom: 12px; }
+    .form-subtext {
+      font-size: 17px;
+      color: var(--text-sec);
+      margin-bottom: 56px;
+    }
+
+    .apply-form {
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 10px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      color: var(--text-pri);
+      padding: 10px 0;
+      width: 100%;
+      transition: border-color 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666660' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      padding-right: 24px;
+      cursor: pointer;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-bottom-color: var(--text-pri);
+    }
+
+    .field textarea { resize: vertical; min-height: 100px; }
+
+    .field input::placeholder,
+    .field textarea::placeholder { color: #AAAAAA; }
+
+    /* ============================================================
+       SECTION 10 — FOOTER
+    ============================================================ */
+    #footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 32px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: var(--text-pri);
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .footer-email {
+      font-size: 13px;
+      color: var(--accent);
+      text-align: right;
+    }
+
+    .footer-copy {
+      text-align: center;
+      font-size: 12px;
+      color: #BBBBBB;
+    }
+
+    /* ============================================================
+       RESPONSIVE — TABLET (≤ 900px)
+    ============================================================ */
+    @media (max-width: 900px) {
+      :root { --sec-pad: 88px; }
+
+      .nav-links, .nav-right .btn { display: none; }
+      .hamburger { display: flex; }
+
+      .problem-grid,
+      .forwho-grid { grid-template-columns: 1fr; gap: 48px; }
+
+      .process-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .process-col {
+        padding: 36px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .process-col:last-child { border-bottom: none; }
+      .process-col + .process-col::before { display: none; }
+
+      .scope-grid { grid-template-columns: 1fr; }
+      .scope-item:nth-child(odd) { border-right: none; }
+      .scope-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+      .scope-item:last-child { border-bottom: none; }
+
+      .cards-row { grid-template-columns: 1fr; }
+
+      .footer-grid { grid-template-columns: 1fr; gap: 16px; text-align: center; }
+      .footer-email { text-align: center; }
+
+      #hero { height: 70vw; min-height: 420px; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — MOBILE (≤ 500px)
+    ============================================================ */
+    @media (max-width: 500px) {
+      :root { --sec-pad: 64px; }
+
+      .container { padding: 0 20px; }
+
+      .section-heading { font-size: 32px; }
+      .model-quote { font-size: 28px; }
+
+      .problem-right p,
+      .checklist li,
+      .proof-subtext,
+      .form-subtext { font-size: 15px; }
+
+      #hero { height: 60vh; min-height: 320px; }
+
+      .hero-tagline { font-size: 17px; }
+
+      .scope-item { padding: 28px 0; }
+
+      .field input,
+      .field select,
+      .field textarea { font-size: 16px; padding: 14px 0; }
+
+      .apply-form { max-width: 100%; }
+    }
+
+    /* ============================================================
+       REDUCED MOTION
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .hero-overlay { opacity: 1 !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       SECTION 1: NAVIGATION
+  ============================================================ -->
+  <nav id="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="THEFAMEFLEX home">THEFAMEFLEX</a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#process">How It Works</a></li>
+        <li><a href="#for-who">Who It's For</a></li>
+        <li><a href="#apply">Apply</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="#apply" class="btn btn-sm" aria-label="Apply Now">Apply Now</a>
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-overlay">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile overlay nav -->
+  <div id="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <a href="#process"  class="overlay-link">How It Works</a>
+    <a href="#for-who"  class="overlay-link">Who It's For</a>
+    <a href="#apply"    class="overlay-link">Apply</a>
+    <a href="#apply" class="btn btn-md" style="margin-top:8px;">Apply Now</a>
+  </div>
+
+  <!-- ============================================================
+       SECTION 2: HERO (Three.js canvas)
+  ============================================================ -->
+  <section id="hero" aria-label="Hero">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-overlay">
+      <p class="hero-tagline">Your audience is ready. Your product isn't. We fix that.</p>
+      <a href="#apply" class="btn btn-md" aria-label="Apply to Partner with THEFAMEFLEX">Apply to Partner</a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3: THE PROBLEM
+  ============================================================ -->
+  <section id="problem" aria-labelledby="problem-heading">
+    <div class="container">
+      <hr class="divider" style="margin-bottom: 80px;" />
+      <div class="problem-grid">
+        <div class="problem-left reveal">
+          <span class="eyebrow">The Gap</span>
+          <h2 class="section-heading" id="problem-heading">You've built the audience.<br>Now what?</h2>
+        </div>
+        <div class="problem-right reveal" style="transition-delay: 0.15s;">
+          <p>Most creators with 10K to 100K followers have something agencies can't give them — a loyal, trusting audience that buys when they recommend. But without a product of their own, that trust earns someone else's revenue.</p>
+          <p>Brand deals pay once. An owned digital product pays forever. The problem is building one takes time, skill, and systems most creators don't have — and agencies aren't set up to provide.</p>
+          <p>That's the gap THEFAMEFLEX fills.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4: HOW IT WORKS
+  ============================================================ -->
+  <section id="process" aria-labelledby="process-heading">
+    <div class="container">
+      <div class="process-header reveal">
+        <span class="eyebrow">The Process</span>
+        <h2 class="section-heading" id="process-heading">Three steps. Zero upfront cost.</h2>
+      </div>
+      <div class="process-grid">
+
+        <div class="process-col reveal" style="transition-delay:0.1s;">
+          <span class="process-num">01 — Identify</span>
+          <h3>Find the right product</h3>
+          <p>We study your audience, your content, and your niche to identify the digital product they already want — before we build a thing.</p>
+        </div>
+
+        <div class="process-col reveal" style="transition-delay:0.2s;">
+          <span class="process-num">02 — Build</span>
+          <h3>We handle everything</h3>
+          <p>Product creation, sales page, launch copywriting, payment setup, and delivery platform — fully handled. You review and approve. We do the work.</p>
+        </div>
+
+        <div class="process-col reveal" style="transition-delay:0.3s;">
+          <span class="process-num">03 — Launch</span>
+          <h3>Go live. Split the revenue.</h3>
+          <p>We run a structured Instagram launch sequence together. Revenue is split 50–75% to you, 25–50% to us. No retainers. No invoices. Just results.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5: WHAT WE HANDLE
+  ============================================================ -->
+  <section id="scope" aria-labelledby="scope-heading">
+    <div class="container">
+      <div class="scope-header reveal">
+        <span class="eyebrow">Full Scope</span>
+        <h2 class="section-heading" id="scope-heading">Everything you don't have time for.</h2>
+      </div>
+      <p class="scope-subhead reveal" style="transition-delay:0.1s;">From zero to launched — without you burning out.</p>
+
+      <div class="scope-grid">
+
+        <!-- Item 1 -->
+        <div class="scope-item reveal">
+          <svg class="scope-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="13" stroke="#C4916A" stroke-width="1.5"/>
+            <path d="M10 16h12M16 10v12" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <p class="scope-label">Product Ideation</p>
+            <p class="scope-desc">We find what your audience will actually pay for</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="scope-item reveal" style="transition-delay:0.1s;">
+          <svg class="scope-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="6" y="5" width="20" height="24" rx="2" stroke="#C4916A" stroke-width="1.5"/>
+            <path d="M11 12h10M11 17h10M11 22h6" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <p class="scope-label">Course &amp; Guide Creation</p>
+            <p class="scope-desc">Written, structured, and production-ready</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="scope-item reveal" style="transition-delay:0.15s;">
+          <svg class="scope-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M6 8h20v16a2 2 0 01-2 2H8a2 2 0 01-2-2V8z" stroke="#C4916A" stroke-width="1.5"/>
+            <path d="M6 8l10 9 10-9" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <p class="scope-label">Sales Page Copywriting</p>
+            <p class="scope-desc">Copy that converts, built around your voice</p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="scope-item reveal" style="transition-delay:0.2s;">
+          <svg class="scope-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="9" y="5" width="14" height="22" rx="2" stroke="#C4916A" stroke-width="1.5"/>
+            <circle cx="16" cy="23" r="1" fill="#C4916A"/>
+            <path d="M12 9h8" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <p class="scope-label">Instagram Launch Sequence</p>
+            <p class="scope-desc">A 14-day story and post strategy</p>
+          </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="scope-item reveal" style="transition-delay:0.25s;">
+          <svg class="scope-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="4" y="10" width="24" height="16" rx="2" stroke="#C4916A" stroke-width="1.5"/>
+            <path d="M4 15h24" stroke="#C4916A" stroke-width="1.5"/>
+            <circle cx="10" cy="21" r="1.5" fill="#C4916A"/>
+          </svg>
+          <div>
+            <p class="scope-label">Payment &amp; Delivery Setup</p>
+            <p class="scope-desc">Razorpay, Wise, Whop — all configured</p>
+          </div>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="scope-item reveal" style="transition-delay:0.3s;">
+          <svg class="scope-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M6 10h20v12a2 2 0 01-2 2H8a2 2 0 01-2-2V10z" stroke="#C4916A" stroke-width="1.5"/>
+            <path d="M10 10V7a2 2 0 012-2h8a2 2 0 012 2v3" stroke="#C4916A" stroke-width="1.5"/>
+            <path d="M12 17h8" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <p class="scope-label">Customer Support Templates</p>
+            <p class="scope-desc">Ready-made replies so you're never stuck</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 6: WHO THIS IS FOR
+  ============================================================ -->
+  <section id="for-who" aria-labelledby="forwho-heading">
+    <div class="container">
+      <div class="forwho-grid">
+
+        <div class="forwho-left reveal">
+          <span class="eyebrow">Ideal Partner</span>
+          <h2 class="section-heading" id="forwho-heading">Built for creators<br>who are ready.</h2>
+        </div>
+
+        <div class="forwho-right reveal" style="transition-delay:0.15s;">
+          <ul class="checklist" role="list">
+            <li>
+              <svg class="check-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="9" stroke="#C4916A" stroke-width="1.5"/>
+                <path d="M6 10l3 3 5-5" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              10,000 to 100,000 followers on Instagram
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="9" stroke="#C4916A" stroke-width="1.5"/>
+                <path d="M6 10l3 3 5-5" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Strong niche — fitness, fashion, finance, career, or entrepreneurship
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="9" stroke="#C4916A" stroke-width="1.5"/>
+                <path d="M6 10l3 3 5-5" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              High engagement — your audience reacts, replies, and trusts you
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="9" stroke="#C4916A" stroke-width="1.5"/>
+                <path d="M6 10l3 3 5-5" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              No existing digital product yet
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="9" stroke="#C4916A" stroke-width="1.5"/>
+                <path d="M6 10l3 3 5-5" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Based in India (international applications also welcome)
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="9" stroke="#C4916A" stroke-width="1.5"/>
+                <path d="M6 10l3 3 5-5" stroke="#C4916A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Serious about building an owned income stream
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 7: THE MODEL (dark)
+  ============================================================ -->
+  <section id="model" aria-labelledby="model-quote">
+    <div class="container">
+      <div class="model-inner reveal">
+        <blockquote class="model-quote" id="model-quote">
+          "We only make money when you make money. That's not a promise — that's the entire structure."
+        </blockquote>
+        <p class="model-sub">No retainers. No monthly fees. No contracts. THEFAMEFLEX earns a 25–50% revenue share only after your product makes its first sale. Our incentives are identical to yours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 8: SOCIAL PROOF
+  ============================================================ -->
+  <section id="social-proof" aria-labelledby="proof-heading">
+    <div class="container">
+      <div class="proof-header reveal">
+        <span class="eyebrow">Partnerships</span>
+        <h2 class="section-heading" id="proof-heading">Currently working with select creators.</h2>
+      </div>
+      <p class="proof-subtext reveal" style="transition-delay:0.1s;">Limited spots open. Applications reviewed on a rolling basis.</p>
+
+      <div class="cards-row">
+
+        <div class="creator-card reveal" style="transition-delay:0.15s;">
+          <div class="card-top">
+            <div class="avatar" role="img" aria-label="Creator avatar"></div>
+            <div>
+              <p class="card-handle">@fitwithpriya</p>
+              <span class="niche-tag">Fitness</span>
+            </div>
+          </div>
+          <div>
+            <p class="card-result">₹1.4L</p>
+            <p class="card-result-label">in first launch week</p>
+          </div>
+        </div>
+
+        <div class="creator-card reveal" style="transition-delay:0.25s;">
+          <div class="card-top">
+            <div class="avatar" role="img" aria-label="Creator avatar"></div>
+            <div>
+              <p class="card-handle">@stylebyneha</p>
+              <span class="niche-tag">Fashion</span>
+            </div>
+          </div>
+          <div>
+            <p class="card-result">₹90K</p>
+            <p class="card-result-label">from first digital guide</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 9: CONTACT
+  ============================================================ -->
+  <section id="apply" aria-labelledby="apply-heading">
+    <div class="container">
+      <div class="form-header reveal">
+        <span class="eyebrow">Apply</span>
+        <h2 class="section-heading" id="apply-heading">Let's see if we're a fit.</h2>
+      </div>
+      <p class="form-subtext reveal" style="transition-delay:0.1s;">Takes 3 minutes. We respond within 48 hours.</p>
+
+      <div class="reveal" style="transition-delay:0.2s; margin-top: 8px;">
+        <a href="mailto:youcanmaildd@gmail.com?subject=Partnership%20Application%20—%20THEFAMEFLEX&body=Hi%20THEFAMEFLEX%2C%0A%0AHere%20are%20my%20details%3A%0A%0AName%3A%0AInstagram%20Handle%3A%0ANiche%3A%0AFollower%20Count%3A%0AAbout%20my%20audience%3A"
+           class="btn btn-md"
+           aria-label="Apply via email to THEFAMEFLEX">
+          Apply via Email
+        </a>
+        <p style="margin-top: 20px; font-size: 14px; color: var(--text-sec);">
+          Or write to us directly at
+          <a href="mailto:youcanmaildd@gmail.com" style="color: var(--accent);">youcanmaildd@gmail.com</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 10: FOOTER
+  ============================================================ -->
+  <footer id="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <span class="footer-logo">THEFAMEFLEX</span>
+        <span class="footer-tagline">We build. You earn. Split down the middle.</span>
+        <a href="mailto:youcanmaildd@gmail.com" class="footer-email">youcanmaildd@gmail.com</a>
+      </div>
+      <p class="footer-copy">© 2026 THEFAMEFLEX. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ----------------------------------------------------------
+       NAV — sticky + hamburger
+    ---------------------------------------------------------- */
+    const nav      = document.getElementById('nav');
+    const hamburger = document.getElementById('hamburger-btn');
+    const overlay  = document.getElementById('nav-overlay');
+    const overlayLinks = overlay.querySelectorAll('.overlay-link, .btn');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = overlay.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    overlayLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        overlay.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    /* ----------------------------------------------------------
+       SCROLL REVEAL — IntersectionObserver
+    ---------------------------------------------------------- */
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      const revealEls = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      revealEls.forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }
+
+    /* ----------------------------------------------------------
+       HERO — Three.js  (cinematic overhaul)
+    ---------------------------------------------------------- */
+    const canvas = document.getElementById('hero-canvas');
+    if (typeof THREE === 'undefined' || !canvas) return;
+
+    /* ---- Renderer ---- */
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.shadowMap.enabled = false;
+
+    /* ---- Scene ---- */
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xEDECE8);
+    scene.fog = new THREE.FogExp2(0xEDECE8, 0.018);
+
+    /* ---- Camera ---- */
+    const camera = new THREE.PerspectiveCamera(42, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
+    camera.position.set(0, 0, 18);
+
+    /* ---- Lighting ---- */
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(5, 10, 8);
+    scene.add(dirLight);
+
+    const rimLight = new THREE.DirectionalLight(0xfff0d0, 0.45);
+    rimLight.position.set(-8, -4, 6);
+    scene.add(rimLight);
+
+    const accentLight = new THREE.PointLight(0xC4916A, 1.2, 40);
+    accentLight.position.set(-3, 2, 6);
+    scene.add(accentLight);
+
+    const clock = new THREE.Clock();
+    let fontLoaded = false;
+
+    /* ================================================================
+       BUILD WORDMARK — individual letter planes for independent motion
+    ================================================================ */
+    const letterMeshes  = [];
+    const basePositions = [];   // final resting positions
+    const introOffsets  = [];   // z start positions for fly-in
+
+    function buildLetters() {
+      const letters  = 'THEFAMEFLEX'.split('');
+      const gap      = 0.05;
+      const fontSize = 180;
+      const fontStr  = `bold ${fontSize}px Arial Black, Arial, sans-serif`;
+      const scale    = 1 / 78;
+      const padX     = 10;
+      const canvasH  = Math.round(fontSize * 1.45);
+
+      /* Measure each letter's ink bounds */
+      const probe  = document.createElement('canvas');
+      probe.width  = Math.round(fontSize * 1.5);
+      probe.height = canvasH;
+      const pctx   = probe.getContext('2d');
+
+      const letterData = letters.map(ch => {
+        pctx.clearRect(0, 0, probe.width, probe.height);
+        pctx.font         = fontStr;
+        pctx.fillStyle    = '#000';
+        pctx.textAlign    = 'left';
+        pctx.textBaseline = 'middle';
+        pctx.fillText(ch, padX, canvasH / 2);
+
+        const img = pctx.getImageData(0, 0, probe.width, canvasH).data;
+        let minX = probe.width, maxX = 0;
+        for (let y = 0; y < canvasH; y++)
+          for (let x = 0; x < probe.width; x++)
+            if (img[(y * probe.width + x) * 4 + 3] > 6) {
+              if (x < minX) minX = x;
+              if (x > maxX) maxX = x;
+            }
+        if (maxX <= minX) { minX = padX; maxX = padX + Math.round(fontSize * 0.55); }
+
+        const inkW = maxX - minX + padX * 2;
+        return { ch, inkW, cropX: minX - padX };
+      });
+
+      /* Compute total scene width */
+      const totalSceneW = letterData.reduce((s, d) => s + d.inkW * scale, 0)
+                        + gap * (letters.length - 1);
+      let curX = -totalSceneW / 2;
+
+      letterData.forEach(({ ch, inkW, cropX }, i) => {
+        /* Render cropped letter */
+        const c   = document.createElement('canvas');
+        c.width   = inkW;
+        c.height  = canvasH;
+        const ctx = c.getContext('2d');
+        ctx.font         = fontStr;
+        ctx.fillStyle    = '#111111';
+        ctx.textAlign    = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(ch, padX - cropX, canvasH / 2);
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.needsUpdate = true;
+
+        const sceneW = inkW   * scale;
+        const sceneH = canvasH * scale;
+        const geo    = new THREE.PlaneGeometry(sceneW, sceneH);
+        const mat    = new THREE.MeshStandardMaterial({
+          map: tex, transparent: true,
+          roughness: 0.15, metalness: 0.35
+        });
+
+        const mesh = new THREE.Mesh(geo, mat);
+        const x    = curX + sceneW / 2;
+
+        /* Start letters far back for fly-in */
+        const zStart = -30 - i * 4;
+        mesh.position.set(x, 0, zStart);
+        mesh.rotation.set(0, 0, 0);
+        mesh.scale.set(0.6, 0.6, 1);
+
+        scene.add(mesh);
+        letterMeshes.push(mesh);
+        basePositions.push({ x, y: 0, z: 0 });
+        introOffsets.push({ z: zStart, delay: i * 0.07 });
+
+        curX += sceneW + gap;
+      });
+
+      fontLoaded = true;
+    }
+
+    buildLetters();
+
+    /* ================================================================
+       PARTICLE FIELD — 220 floating dust particles
+    ================================================================ */
+    const PARTICLE_COUNT = 220;
+    const pGeo  = new THREE.BufferGeometry();
+    const pPos  = new Float32Array(PARTICLE_COUNT * 3);
+    const pVel  = [];
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      pPos[i * 3]     = (Math.random() - 0.5) * 30;
+      pPos[i * 3 + 1] = (Math.random() - 0.5) * 16;
+      pPos[i * 3 + 2] = (Math.random() - 0.5) * 20 - 2;
+      pVel.push({
+        x: (Math.random() - 0.5) * 0.004,
+        y:  Math.random()         * 0.005 + 0.001,
+        z: (Math.random() - 0.5) * 0.003
+      });
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+
+    const pMat = new THREE.PointsMaterial({
+      color: 0xBBB8B0,
+      size: 0.055,
+      transparent: true,
+      opacity: 0.55,
+      sizeAttenuation: true
+    });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    /* ================================================================
+       RESIZE
+    ================================================================ */
+    function onResize() {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', onResize, { passive: true });
+
+    /* ================================================================
+       SCROLL
+    ================================================================ */
+    let scrollY = 0;
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+      canvas.style.opacity = Math.max(0, 1 - scrollY / 380);
+    }, { passive: true });
+
+    /* ================================================================
+       MOUSE / TOUCH
+    ================================================================ */
+    let mouseX = 0, mouseY = 0;
+    let curMouseX = 0, curMouseY = 0;
+
+    window.addEventListener('mousemove', e => {
+      mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', e => {
+      if (e.touches.length) {
+        mouseX = (e.touches[0].clientX / window.innerWidth  - 0.5) * 2;
+        mouseY = (e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+      }
+    }, { passive: true });
+
+    /* ================================================================
+       GLITCH STATE
+    ================================================================ */
+    let glitchTimer    = 0;
+    let glitchTarget   = -1;
+    let glitchDuration = 0;
+    let glitchActive   = false;
+
+    /* ================================================================
+       UTILS
+    ================================================================ */
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+    /* ================================================================
+       ANIMATE LOOP
+    ================================================================ */
+    let animActive = !prefersReducedMotion;
+    const introStart = clock.getElapsedTime();
+
+    function animate() {
+      if (!animActive) return;
+      requestAnimationFrame(animate);
+
+      const t    = clock.getElapsedTime();
+      const dt   = Math.min(clock.getDelta(), 0.05);   // capped delta
+      const elapsed = t - introStart;
+
+      /* ---- Smooth mouse ---- */
+      curMouseX = lerp(curMouseX, mouseX, 0.035);
+      curMouseY = lerp(curMouseY, mouseY, 0.035);
+
+      /* ---- Camera cinematic drift — slow figure-8 orbit ---- */
+      const camDriftX = Math.sin(t * 0.18) * 0.6  + curMouseX * 0.4;
+      const camDriftY = Math.sin(t * 0.11) * 0.28 + curMouseY * -0.25;
+      camera.position.x = lerp(camera.position.x, camDriftX, 0.025);
+      camera.position.y = lerp(camera.position.y, camDriftY, 0.025);
+      camera.lookAt(0, 0, 0);
+
+      /* ---- Scroll: push letters apart horizontally + z ---- */
+      const scrollPush = scrollY * 0.012;
+
+      /* ---- Glitch trigger ---- */
+      glitchTimer -= 0.016;
+      if (glitchTimer <= 0 && letterMeshes.length > 0) {
+        glitchTimer    = 2.2 + Math.random() * 3.5;
+        glitchTarget   = Math.floor(Math.random() * letterMeshes.length);
+        glitchDuration = 0.18 + Math.random() * 0.22;
+        glitchActive   = true;
+      }
+      if (glitchActive) {
+        glitchDuration -= 0.016;
+        if (glitchDuration <= 0) { glitchActive = false; glitchTarget = -1; }
+      }
+
+      /* ---- Letter animation ---- */
+      const totalLetters = letterMeshes.length;
+
+      letterMeshes.forEach((mesh, i) => {
+        const base  = basePositions[i];
+        const intro = introOffsets[i];
+
+        /* — Fly-in from back — */
+        const flyDelay    = intro.delay;
+        const flyProgress = Math.min(1, Math.max(0, (elapsed - flyDelay) / 1.1));
+        const flyEased    = easeOutCubic(flyProgress);
+
+        const targetZ = lerp(intro.z, base.z, flyEased);
+        const targetScale = lerp(0.6, 1.0, flyEased);
+
+        /* — Idle float: each letter on its own phase — */
+        const phase   = i * 0.55;
+        const floatY  = Math.sin(t * 0.52 + phase) * 0.11;
+        const floatZ  = Math.sin(t * 0.31 + phase) * 0.18;
+
+        /* — Scroll: letters fan outward from center — */
+        const spreadDir   = (i / (totalLetters - 1) - 0.5) * 2;   // -1 to 1
+        const scrollSpreadX = spreadDir * scrollPush * 0.55;
+        const scrollSpreadY = -scrollPush * 0.4;
+
+        /* — Mouse parallax: each letter shifts slightly by position — */
+        const mouseInfluence = 1 - Math.abs(spreadDir) * 0.3;
+        const mParX = curMouseX * 0.18 * mouseInfluence;
+        const mParY = curMouseY * -0.12;
+
+        /* — Glitch — */
+        let glitchOffsetX = 0, glitchOffsetY = 0, glitchScaleY = 1;
+        if (glitchActive && glitchTarget === i) {
+          glitchOffsetX = (Math.random() - 0.5) * 0.25;
+          glitchOffsetY = (Math.random() - 0.5) * 0.18;
+          glitchScaleY  = 1 + (Math.random() - 0.5) * 0.15;
+        }
+
+        /* — Apply — */
+        mesh.position.x = lerp(mesh.position.x, base.x + mParX + scrollSpreadX + glitchOffsetX, 0.08);
+        mesh.position.y = lerp(mesh.position.y, base.y + floatY + mParY + scrollSpreadY + glitchOffsetY, 0.06);
+        mesh.position.z = lerp(mesh.position.z, targetZ  + floatZ, 0.06);
+
+        mesh.scale.x = lerp(mesh.scale.x, targetScale, 0.07);
+        mesh.scale.y = lerp(mesh.scale.y, targetScale * glitchScaleY, 0.07);
+
+        /* — Rotation: mouse tilt + tiny idle sway — */
+        const idleSway = Math.sin(t * 0.38 + phase) * 0.018;
+        mesh.rotation.x = lerp(mesh.rotation.x, curMouseY * -0.07 + idleSway * 0.4, 0.05);
+        mesh.rotation.y = lerp(mesh.rotation.y, curMouseX *  0.09, 0.05);
+        mesh.rotation.z = lerp(mesh.rotation.z, idleSway, 0.05);
+      });
+
+      /* ---- Particle drift ---- */
+      const pos = pGeo.attributes.position.array;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        pos[i * 3]     += pVel[i].x;
+        pos[i * 3 + 1] += pVel[i].y;
+        pos[i * 3 + 2] += pVel[i].z;
+        // Wrap particles
+        if (pos[i * 3 + 1] > 9)  pos[i * 3 + 1] = -9;
+        if (pos[i * 3]     > 16) pos[i * 3]     = -16;
+        if (pos[i * 3]     < -16) pos[i * 3]    =  16;
+      }
+      pGeo.attributes.position.needsUpdate = true;
+
+      /* ---- Accent light orbit ---- */
+      accentLight.position.x = Math.sin(t * 0.4) * 6;
+      accentLight.position.y = Math.cos(t * 0.3) * 4;
+
+      renderer.render(scene, camera);
+    }
+
+    /* ---- Reduced motion ---- */
+    if (prefersReducedMotion) {
+      animActive = false;
+      setTimeout(() => renderer.render(scene, camera), 200);
+    } else {
+      animate();
+    }
+
+  }());
+  </script>
+
+</body>
+</html>
