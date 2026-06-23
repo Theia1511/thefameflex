@@ -686,7 +686,7 @@
       .footer-grid { grid-template-columns: 1fr; gap: 16px; text-align: center; }
       .footer-email { text-align: center; }
 
-      #hero { height: 70vw; min-height: 420px; }
+      #hero { height: 56vw; min-height: 340px; max-height: 520px; }
     }
 
     /* ============================================================
@@ -697,25 +697,66 @@
 
       .container { padding: 0 20px; }
 
-      .section-heading { font-size: 32px; }
-      .model-quote { font-size: 28px; }
+      /* Nav */
+      .nav-logo { font-size: 15px; color: var(--text-pri) !important; }
+      .nav-inner { padding: 0 16px; }
 
+      /* Hero */
+      #hero {
+        height: 100vw;
+        min-height: 300px;
+        max-height: 480px;
+      }
+      .hero-overlay {
+        bottom: 8%;
+        gap: 16px;
+        padding: 0 16px;
+      }
+      .hero-tagline {
+        font-size: 15px;
+        max-width: 300px;
+      }
+      .hero-overlay .btn {
+        height: 44px;
+        font-size: 14px;
+        padding: 0 24px;
+      }
+
+      /* Typography */
+      .section-heading { font-size: 30px; }
+      .model-quote     { font-size: 24px; }
+      .eyebrow         { font-size: 10px; }
+
+      /* Body text */
       .problem-right p,
       .checklist li,
       .proof-subtext,
-      .form-subtext { font-size: 15px; }
+      .scope-subhead,
+      .form-subtext    { font-size: 15px; }
 
-      #hero { height: 60vh; min-height: 320px; }
+      /* Scope grid */
+      .scope-item      { padding: 24px 0; gap: 14px; }
+      .scope-label     { font-size: 17px; }
 
-      .hero-tagline { font-size: 17px; }
+      /* Process */
+      .process-col     { padding: 28px 0; }
+      .process-col h3  { font-size: 19px; }
+      .process-col p   { font-size: 14px; }
 
-      .scope-item { padding: 28px 0; }
+      /* Cards */
+      .creator-card    { padding: 20px; }
+      .card-result     { font-size: 22px; }
 
-      .field input,
-      .field select,
-      .field textarea { font-size: 16px; padding: 14px 0; }
+      /* Footer */
+      .footer-grid     { gap: 12px; }
 
-      .apply-form { max-width: 100%; }
+      /* Sections that were appearing black — ensure bg is set */
+      #problem  { background: #FFFFFF; }
+      #process  { background: var(--bg-alt); }
+      #scope    { background: #FFFFFF; }
+      #for-who  { background: var(--bg-alt); }
+      #social-proof { background: #FFFFFF; }
+      #apply    { background: var(--bg-alt); }
     }
 
     /* ============================================================
@@ -1155,8 +1196,9 @@
     scene.fog = new THREE.FogExp2(0xEDECE8, 0.018);
 
     /* ---- Camera ---- */
+    const isMobile = window.innerWidth <= 600;
     const camera = new THREE.PerspectiveCamera(42, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
-    camera.position.set(0, 0, 18);
+    camera.position.set(0, 0, isMobile ? 28 : 18);
 
     /* ---- Lighting ---- */
     scene.add(new THREE.AmbientLight(0xffffff, 0.55));
@@ -1237,16 +1279,16 @@
         ctx.textBaseline = 'middle';
         ctx.fillText(ch, padX - cropX, canvasH / 2);
 
-        const tex = new THREE.CanvasTexture(c);
-        tex.needsUpdate = true;
+      const tex = new THREE.CanvasTexture(c);
+      tex.needsUpdate = true;
 
-        const sceneW = inkW   * scale;
-        const sceneH = canvasH * scale;
-        const geo    = new THREE.PlaneGeometry(sceneW, sceneH);
-        const mat    = new THREE.MeshStandardMaterial({
-          map: tex, transparent: true,
-          roughness: 0.15, metalness: 0.35
-        });
+      const sceneW = inkW   * scale;
+      const sceneH = canvasH * scale;
+      const geo    = new THREE.PlaneGeometry(sceneW, sceneH);
+      const mat    = new THREE.MeshStandardMaterial({
+        map: tex, transparent: true,
+        roughness: 0.15, metalness: 0.35
+      });
 
         const mesh = new THREE.Mesh(geo, mat);
         const x    = curX + sceneW / 2;
@@ -1306,6 +1348,10 @@
     function onResize() {
       const w = canvas.clientWidth, h = canvas.clientHeight;
       camera.aspect = w / h;
+      // Pull camera back further on narrow viewports so letters fit
+      const mobile = w <= 600;
+      const targetZ = mobile ? 28 : (w <= 900 ? 22 : 18);
+      camera.position.z = targetZ;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     }
