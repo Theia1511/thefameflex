@@ -1,4 +1,4 @@
-ï»¿Ã¯»¿<!DOCTYPE html>
+﻿Ã¯»¿Ã¯»¿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -56,7 +56,10 @@
       --sec-pad:    120px;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -65,6 +68,9 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* Hide scrollbar on webkit mobile */
+    ::-webkit-scrollbar { display: none; }
 
     h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; }
 
@@ -700,7 +706,7 @@
     }
 
     /* ============================================================
-       RESPONSIVE "&rdquo; TABLET (Ã¢&rdquo;¤ 900px)
+       RESPONSIVE "&rdquo; TABLET (Ã¢&rdquo;¤ 900px)
     ============================================================ */
     @media (max-width: 900px) {
       :root { --sec-pad: 88px; }
@@ -736,7 +742,7 @@
     }
 
     /* ============================================================
-       RESPONSIVE "&rdquo; MOBILE (Ã¢&rdquo;¤ 500px)
+       RESPONSIVE "&rdquo; MOBILE (Ã¢&rdquo;¤ 500px)
     ============================================================ */
     @media (max-width: 500px) {
       :root { --sec-pad: 64px; }
@@ -1193,7 +1199,7 @@
         <span class="footer-tagline">We build. You earn. Split down the middle.</span>
         <a href="mailto:youcanmaildd@gmail.com" class="footer-email">youcanmaildd@gmail.com</a>
       </div>
-      <p class="footer-copy">Ã&copy; 2026 THEFAMEFLEX. All rights reserved.</p>
+      <p class="footer-copy">Ã&copy; 2026 THEFAMEFLEX. All rights reserved.</p>
     </div>
   </footer>
 
@@ -1302,7 +1308,7 @@
       const gap      = 0.05;
       const fontSize = 180;
       const fontStr  = `bold ${fontSize}px Arial Black, Arial, sans-serif`;
-      const unitScale = 1 / 78;   // canvas px Ã¢&rdquo;&rdquo; Three.js units
+      const unitScale = 1 / 78;   // canvas px Ã¢&rdquo;&rdquo; Three.js units
       const padX     = 10;
       const canvasH  = Math.round(fontSize * 1.45);
 
