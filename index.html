@@ -1179,10 +1179,308 @@
     }
 
     /* ----------------------------------------------------------
-       HERO — Three.js  (cinematic overhaul)
+       HERO — Three.js
     ---------------------------------------------------------- */
     const canvas = document.getElementById('hero-canvas');
     if (typeof THREE === 'undefined' || !canvas) return;
+
+    /* ---- Renderer ---- */
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+    /* ---- Scene ---- */
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xEDECE8);
+    scene.fog = new THREE.FogExp2(0xEDECE8, 0.018);
+
+    /* ---- Camera ---- */
+    const camera = new THREE.PerspectiveCamera(42, canvas.clientWidth / canvas.clientHeight, 0.1, 200);
+    camera.position.set(0, 0, 18);
+
+    /* ---- Lighting ---- */
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(5, 10, 8);
+    scene.add(dirLight);
+    const rimLight = new THREE.DirectionalLight(0xfff0d0, 0.45);
+    rimLight.position.set(-8, -4, 6);
+    scene.add(rimLight);
+    const accentLight = new THREE.PointLight(0xC4916A, 1.2, 40);
+    accentLight.position.set(-3, 2, 6);
+    scene.add(accentLight);
+
+    const clock = new THREE.Clock();
+
+    /* ================================================================
+       WORDMARK GROUP — all letters inside one Group so scaling is trivial
+    ================================================================ */
+    const wordmarkGroup = new THREE.Group();
+    scene.add(wordmarkGroup);
+
+    const letterMeshes  = [];
+    const basePositions = [];
+    const introOffsets  = [];
+
+    (function buildLetters() {
+      const letters  = 'THEFAMEFLEX'.split('');
+      const gap      = 0.05;
+      const fontSize = 180;
+      const fontStr  = `bold ${fontSize}px Arial Black, Arial, sans-serif`;
+      const unitScale = 1 / 78;   // canvas px → Three.js units
+      const padX     = 10;
+      const canvasH  = Math.round(fontSize * 1.45);
+
+      /* Step 1: measure real ink bounds per letter */
+      const probe  = document.createElement('canvas');
+      probe.width  = Math.round(fontSize * 1.5);
+      probe.height = canvasH;
+      const pctx   = probe.getContext('2d');
+
+      const letterData = letters.map(ch => {
+        pctx.clearRect(0, 0, probe.width, probe.height);
+        pctx.font = fontStr; pctx.fillStyle = '#000';
+        pctx.textAlign = 'left'; pctx.textBaseline = 'middle';
+        pctx.fillText(ch, padX, canvasH / 2);
+        const px = pctx.getImageData(0, 0, probe.width, canvasH).data;
+        let minX = probe.width, maxX = 0;
+        for (let y = 0; y < canvasH; y++)
+          for (let x = 0; x < probe.width; x++)
+            if (px[(y * probe.width + x) * 4 + 3] > 6) {
+              if (x < minX) minX = x; if (x > maxX) maxX = x;
+            }
+        if (maxX <= minX) { minX = padX; maxX = padX + Math.round(fontSize * 0.55); }
+        return { ch, inkW: maxX - minX + padX * 2, cropX: minX - padX };
+      });
+
+      /* Step 2: total scene width, start cursor */
+      const totalW = letterData.reduce((s, d) => s + d.inkW * unitScale, 0) + gap * (letters.length - 1);
+      let curX = -totalW / 2;
+
+      /* Step 3: build each letter mesh */
+      letterData.forEach(({ ch, inkW, cropX }, i) => {
+        const c = document.createElement('canvas');
+        c.width = inkW; c.height = canvasH;
+        const ctx = c.getContext('2d');
+        ctx.font = fontStr; ctx.fillStyle = '#111111';
+        ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.fillText(ch, padX - cropX, canvasH / 2);
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.needsUpdate = true;
+
+        const sw = inkW * unitScale, sh = canvasH * unitScale;
+        const geo = new THREE.PlaneGeometry(sw, sh);
+        const mat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.15, metalness: 0.35 });
+        const mesh = new THREE.Mesh(geo, mat);
+
+        const x = curX + sw / 2;
+        const zStart = -28 - i * 3.5;
+        mesh.position.set(x, 0, zStart);
+        mesh.scale.set(0.5, 0.5, 1);
+
+        wordmarkGroup.add(mesh);
+        letterMeshes.push(mesh);
+        basePositions.push({ x, y: 0, z: 0 });
+        introOffsets.push({ z: zStart, delay: i * 0.06 });
+        curX += sw + gap;
+      });
+
+      /* Step 4: auto-scale group to fill viewport */
+      fitGroupToViewport();
+    }());
+
+    /* Scale the wordmarkGroup so letters fill ~85% of screen width */
+    function fitGroupToViewport() {
+      if (!letterMeshes.length) return;
+      const fovRad   = camera.fov * (Math.PI / 180);
+      const frustumW = 2 * Math.tan(fovRad / 2) * camera.position.z * camera.aspect;
+      const fill     = canvas.clientWidth <= 600 ? 0.92 : 0.84;
+
+      /* Measure raw group width at scale 1 */
+      wordmarkGroup.scale.set(1, 1, 1);
+      const box = new THREE.Box3().setFromObject(wordmarkGroup);
+      const rawW = box.max.x - box.min.x;
+      if (rawW === 0) return;
+
+      const s = (frustumW * fill) / rawW;
+      wordmarkGroup.scale.set(s, s, 1);
+    }
+
+    /* ================================================================
+       PARTICLES
+    ================================================================ */
+    const PCOUNT = 220;
+    const pPos = new Float32Array(PCOUNT * 3);
+    const pVel = [];
+    for (let i = 0; i < PCOUNT; i++) {
+      pPos[i*3]   = (Math.random()-0.5)*30;
+      pPos[i*3+1] = (Math.random()-0.5)*16;
+      pPos[i*3+2] = (Math.random()-0.5)*20 - 2;
+      pVel.push({ x:(Math.random()-0.5)*0.004, y:Math.random()*0.005+0.001, z:(Math.random()-0.5)*0.003 });
+    }
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({ color:0xBBB8B0, size:0.055, transparent:true, opacity:0.5, sizeAttenuation:true });
+    scene.add(new THREE.Points(pGeo, pMat));
+
+    /* ================================================================
+       RESIZE
+    ================================================================ */
+    function onResize() {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+      fitGroupToViewport();
+    }
+    window.addEventListener('resize', onResize, { passive: true });
+
+    /* ================================================================
+       SCROLL
+    ================================================================ */
+    let scrollY = 0;
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+      canvas.style.opacity = Math.max(0, 1 - scrollY / 380);
+    }, { passive: true });
+
+    /* ================================================================
+       MOUSE / TOUCH
+    ================================================================ */
+    let mouseX = 0, mouseY = 0, curMouseX = 0, curMouseY = 0;
+    window.addEventListener('mousemove', e => {
+      mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+    window.addEventListener('touchmove', e => {
+      if (e.touches.length) {
+        mouseX = (e.touches[0].clientX / window.innerWidth  - 0.5) * 2;
+        mouseY = (e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+      }
+    }, { passive: true });
+
+    /* ================================================================
+       GLITCH
+    ================================================================ */
+    let glitchTimer = 2, glitchTarget = -1, glitchDur = 0, glitchOn = false;
+
+    /* ================================================================
+       UTILS
+    ================================================================ */
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+    /* ================================================================
+       ANIMATE
+    ================================================================ */
+    let animActive = !prefersReducedMotion;
+    const introStart = clock.getElapsedTime();
+
+    function animate() {
+      if (!animActive) return;
+      requestAnimationFrame(animate);
+
+      const t       = clock.getElapsedTime();
+      const elapsed = t - introStart;
+
+      /* Smooth mouse */
+      curMouseX = lerp(curMouseX, mouseX, 0.035);
+      curMouseY = lerp(curMouseY, mouseY, 0.035);
+
+      /* Camera drift */
+      const cdX = Math.sin(t * 0.18) * 0.5 + curMouseX * 0.35;
+      const cdY = Math.sin(t * 0.11) * 0.22 + curMouseY * -0.2;
+      camera.position.x = lerp(camera.position.x, cdX, 0.025);
+      camera.position.y = lerp(camera.position.y, cdY, 0.025);
+      camera.lookAt(0, 0, 0);
+
+      const scrollPush = scrollY * 0.012;
+      const N = letterMeshes.length;
+
+      /* Glitch tick */
+      glitchTimer -= 0.016;
+      if (glitchTimer <= 0 && N > 0) {
+        glitchTimer  = 2.5 + Math.random() * 3;
+        glitchTarget = Math.floor(Math.random() * N);
+        glitchDur    = 0.15 + Math.random() * 0.2;
+        glitchOn     = true;
+      }
+      if (glitchOn) { glitchDur -= 0.016; if (glitchDur <= 0) { glitchOn = false; glitchTarget = -1; } }
+
+      letterMeshes.forEach((mesh, i) => {
+        const base  = basePositions[i];
+        const intro = introOffsets[i];
+
+        /* Fly-in */
+        const fp  = easeOutCubic(Math.min(1, Math.max(0, (elapsed - intro.delay) / 1.1)));
+        const tZ  = lerp(intro.z, base.z, fp);
+        const tSc = lerp(0.5, 1.0, fp);
+
+        /* Float */
+        const ph   = i * 0.55;
+        const floY = Math.sin(t * 0.52 + ph) * 0.11;
+        const floZ = Math.sin(t * 0.31 + ph) * 0.16;
+
+        /* Scroll spread */
+        const dir  = (i / (N - 1) - 0.5) * 2;
+        const spX  = dir * scrollPush * 0.5;
+        const spY  = -scrollPush * 0.35;
+
+        /* Mouse parallax */
+        const mX = curMouseX * 0.16 * (1 - Math.abs(dir) * 0.3);
+        const mY = curMouseY * -0.11;
+
+        /* Glitch */
+        let gX = 0, gY = 0, gSY = 1;
+        if (glitchOn && glitchTarget === i) {
+          gX  = (Math.random()-0.5)*0.22;
+          gY  = (Math.random()-0.5)*0.15;
+          gSY = 1 + (Math.random()-0.5)*0.12;
+        }
+
+        mesh.position.x = lerp(mesh.position.x, base.x + mX + spX + gX, 0.08);
+        mesh.position.y = lerp(mesh.position.y, base.y + floY + mY + spY + gY, 0.06);
+        mesh.position.z = lerp(mesh.position.z, tZ + floZ, 0.06);
+        mesh.scale.x    = lerp(mesh.scale.x, tSc, 0.07);
+        mesh.scale.y    = lerp(mesh.scale.y, tSc * gSY, 0.07);
+
+        const sway = Math.sin(t * 0.38 + ph) * 0.018;
+        mesh.rotation.x = lerp(mesh.rotation.x, curMouseY * -0.07 + sway * 0.4, 0.05);
+        mesh.rotation.y = lerp(mesh.rotation.y, curMouseX *  0.09, 0.05);
+        mesh.rotation.z = lerp(mesh.rotation.z, sway, 0.05);
+      });
+
+      /* Particles */
+      for (let i = 0; i < PCOUNT; i++) {
+        pPos[i*3]   += pVel[i].x;
+        pPos[i*3+1] += pVel[i].y;
+        pPos[i*3+2] += pVel[i].z;
+        if (pPos[i*3+1] > 9)   pPos[i*3+1] = -9;
+        if (pPos[i*3]   > 16)  pPos[i*3]   = -16;
+        if (pPos[i*3]   < -16) pPos[i*3]   =  16;
+      }
+      pGeo.attributes.position.needsUpdate = true;
+
+      /* Accent light orbit */
+      accentLight.position.x = Math.sin(t * 0.4) * 6;
+      accentLight.position.y = Math.cos(t * 0.3) * 4;
+
+      renderer.render(scene, camera);
+    }
+
+    if (prefersReducedMotion) {
+      animActive = false;
+      setTimeout(() => renderer.render(scene, camera), 300);
+    } else {
+      animate();
+    }
+
+  }());
+  </script>
+
+</body>
+</html>
 
     /* ---- Renderer ---- */
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
@@ -1222,8 +1520,10 @@
        BUILD WORDMARK — individual letter planes for independent motion
     ================================================================ */
     const letterMeshes  = [];
-    const basePositions = [];   // final resting positions
-    const introOffsets  = [];   // z start positions for fly-in
+    const basePositions = [];
+    const introOffsets  = [];
+    const wordmarkGroup = new THREE.Group();
+    scene.add(wordmarkGroup);
 
     function buildLetters() {
       const letters  = 'THEFAMEFLEX'.split('');
@@ -1268,7 +1568,6 @@
       let curX = -totalSceneW / 2;
 
       letterData.forEach(({ ch, inkW, cropX }, i) => {
-        /* Render cropped letter */
         const c   = document.createElement('canvas');
         c.width   = inkW;
         c.height  = canvasH;
@@ -1279,16 +1578,63 @@
         ctx.textBaseline = 'middle';
         ctx.fillText(ch, padX - cropX, canvasH / 2);
 
-      const tex = new THREE.CanvasTexture(c);
-      tex.needsUpdate = true;
+        const tex  = new THREE.CanvasTexture(c);
+        tex.needsUpdate = true;
 
-      const sceneW = inkW   * scale;
-      const sceneH = canvasH * scale;
-      const geo    = new THREE.PlaneGeometry(sceneW, sceneH);
-      const mat    = new THREE.MeshStandardMaterial({
-        map: tex, transparent: true,
-        roughness: 0.15, metalness: 0.35
+        const sceneW = inkW    * scale;
+        const sceneH = canvasH * scale;
+        const geo    = new THREE.PlaneGeometry(sceneW, sceneH);
+        const mat    = new THREE.MeshStandardMaterial({
+          map: tex, transparent: true,
+          roughness: 0.15, metalness: 0.35
+        });
+
+        const mesh = new THREE.Mesh(geo, mat);
+        const x    = curX + sceneW / 2;
+        const zStart = -30 - i * 4;
+        mesh.position.set(x, 0, zStart);
+        mesh.rotation.set(0, 0, 0);
+        mesh.scale.set(0.6, 0.6, 1);
+
+        wordmarkGroup.add(mesh);
+        letterMeshes.push(mesh);
+        basePositions.push({ x, y: 0, z: 0 });
+        introOffsets.push({ z: zStart, delay: i * 0.07 });
+
+        curX += sceneW + gap;
       });
+
+      /* Scale entire group to fit viewport width */
+      scaleGroupToFit();
+      fontLoaded = true;
+    }
+
+    /* How wide the wordmark is in world units at scale=1 */
+    function getGroupWorldWidth() {
+      if (!letterMeshes.length) return 1;
+      const box = new THREE.Box3().setFromObject(wordmarkGroup);
+      return box.max.x - box.min.x;
+    }
+
+    function scaleGroupToFit() {
+      if (!letterMeshes.length) return;
+      const vw = canvas.clientWidth;
+
+      /* How many world units fit horizontally in the camera frustum at z=0 */
+      const fovRad    = camera.fov * Math.PI / 180;
+      const dist      = camera.position.z;
+      const frustumW  = 2 * Math.tan(fovRad / 2) * dist * camera.aspect;
+
+      /* Target: wordmark takes up 85% of frustum width on desktop, 92% on mobile */
+      const targetFill = vw <= 600 ? 0.90 : 0.82;
+      const targetW    = frustumW * targetFill;
+
+      /* Measure actual group width at current scale */
+      wordmarkGroup.scale.set(1, 1, 1);
+      const actualW = getGroupWorldWidth();
+      const s = targetW / actualW;
+      wordmarkGroup.scale.set(s, s, 1);
+    }      });
 
         const mesh = new THREE.Mesh(geo, mat);
         const x    = curX + sceneW / 2;
